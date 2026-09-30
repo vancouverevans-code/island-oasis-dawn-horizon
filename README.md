@@ -7,7 +7,7 @@ Forge one agent, fire a public signal, and stoke it with testnet BOT. Kiln is a 
 1. Open the app and connect MetaMask, Rabby, or another injected EVM wallet. Kiln adds **BOT Chain Testnet** if it is missing.
 2. Claim test BOT from the [faucet](https://faucet.botchain.ai/en/basic). Gas is paid in BOT.
 3. **Deploy Kiln to testnet.** That is one contract-creation transaction. Copy the address or open it on the [explorer](https://scan.bohr.life).
-4. Forge an agent (one per wallet), fire a signal, or stoke someone else's. Staking a signal sends that BOT straight to the agent owner.
+4. Forge an agent (one per wallet), fire a signal, or stoke someone else's. Stoking a signal sends that BOT straight to the agent owner.
 
 Already deployed? Paste the contract address into **Open**. Hide it on this device any time. The chain copy stays where it is.
 
