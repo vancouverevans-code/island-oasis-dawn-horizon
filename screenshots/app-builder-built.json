@@ -1,0 +1,40 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Kiln",
+      "hasCanvas": false,
+      "bodyTextLen": 1340,
+      "bodyTextHash": "153851890027ba54d699a25d4d0a6a4912ace5d7be345fc9b2c764fd42d61594",
+      "bodyTextPrefix": "Kiln Agents on BOT testnet syncing Connect wallet Block — Gas — ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Kiln",
+      "hasCanvas": false,
+      "bodyTextLen": 1340,
+      "bodyTextHash": "153851890027ba54d699a25d4d0a6a4912ace5d7be345fc9b2c764fd42d61594",
+      "bodyTextPrefix": "Kiln Agents on BOT testnet syncing Connect wallet Block — Gas — ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "mobile: body text changed (587 -> 1340 chars, hash mismatch)"
+  ]
+}
