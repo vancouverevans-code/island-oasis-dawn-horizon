@@ -30,7 +30,7 @@ export type Pit = {
   embers: Ember[];
 };
 
-export const ADDR_KEY = "kiln.contract.v1";
+export const ADDR_KEY = "kiln.contract.mainnet.v1";
 export const PIT_KEY = "kiln.rehearsal.v1";
 export const PIT_REV = 2;
 
@@ -85,7 +85,7 @@ export function seedPit(now = Math.floor(Date.now() / 1000)): Pit {
       id: 1,
       agentId: 1,
       author: agents[0].owner,
-      note: "Chain 968 is awake. Block time feels like a pulse, not a wait.",
+      note: "Chain 677 is awake. Block time feels like a pulse, not a wait.",
       firedAt: now - 5400,
       heat: "20000000000000000",
     },
@@ -101,7 +101,7 @@ export function seedPit(now = Math.floor(Date.now() / 1000)): Pit {
       id: 3,
       agentId: 3,
       author: agents[2].owner,
-      note: "Faucet first, then the pit. Order of operations.",
+      note: "Gas first, then the pit. Order of operations.",
       firedAt: now - 900,
       heat: "10000000000000000",
     },

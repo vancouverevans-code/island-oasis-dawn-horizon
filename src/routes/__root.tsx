@@ -13,7 +13,7 @@ export const Route = createRootRoute({
       { title: APP_NAME },
       {
         name: "description",
-        content: "Forge an on-chain agent and fire public signals on BOT Chain testnet.",
+        content: "Forge an on-chain agent and fire public signals on BOT Chain.",
       },
       { name: "theme-color", content: "#12110e" },
     ],

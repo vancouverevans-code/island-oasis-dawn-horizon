@@ -11,23 +11,23 @@ import {
 import { KILN_ABI, KILN_BYTECODE } from "@/lib/kiln/artifact";
 import type { Agent, Ember, Pit } from "@/lib/kiln/model";
 
-export const BOT_TESTNET_ID = 968;
-export const BOT_TESTNET_HEX = "0x3c8";
-export const RPC_URL = "https://rpc.bohr.life";
-export const EXPLORER_URL = "https://scan.bohr.life";
-export const FAUCET_URL = "https://faucet.botchain.ai/en/basic";
+export const BOT_CHAIN_ID = 677;
+export const BOT_CHAIN_HEX = "0x2a5";
+export const RPC_URL = "https://rpc.botchain.ai";
+export const EXPLORER_URL = "https://scan.botchain.ai";
+export const DEX_URL = "https://dex.botchain.ai/";
 export const DOCS_URL = "https://dev-docs.botchain.ai/docs/Developers/quick-guide/";
 
-export const botTestnet = defineChain({
-  id: BOT_TESTNET_ID,
-  name: "BOT Chain Testnet",
+export const botChain = defineChain({
+  id: BOT_CHAIN_ID,
+  name: "BOT Chain",
   nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
   rpcUrls: { default: { http: [RPC_URL] } },
   blockExplorers: { default: { name: "BOT Explorer", url: EXPLORER_URL } },
 });
 
 export const publicClient = createPublicClient({
-  chain: botTestnet,
+  chain: botChain,
   transport: http(RPC_URL),
 });
 
@@ -169,13 +169,14 @@ function range(from: number, to: number) {
 
 export async function ensureBotChain(provider: EthereumProvider) {
   const current = String(await provider.request({ method: "eth_chainId" })).toLowerCase();
-  if (current === BOT_TESTNET_HEX) return;
+  const parsed = current.startsWith("0x") ? Number.parseInt(current, 16) : Number(current);
+  if (current === BOT_CHAIN_HEX || parsed === BOT_CHAIN_ID) return;
   const add = {
     method: "wallet_addEthereumChain",
     params: [
       {
-        chainId: BOT_TESTNET_HEX,
-        chainName: "BOT Chain Testnet",
+        chainId: BOT_CHAIN_HEX,
+        chainName: "BOT Chain",
         nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
         rpcUrls: [RPC_URL],
         blockExplorerUrls: [EXPLORER_URL],
@@ -185,7 +186,7 @@ export async function ensureBotChain(provider: EthereumProvider) {
   try {
     await provider.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: BOT_TESTNET_HEX }],
+      params: [{ chainId: BOT_CHAIN_HEX }],
     });
   } catch (error) {
     const code = (error as { code?: number }).code;
@@ -204,7 +205,7 @@ export async function ensureBotChain(provider: EthereumProvider) {
 export function walletFrom(provider: EthereumProvider, account: Address) {
   return createWalletClient({
     account,
-    chain: botTestnet,
+    chain: botChain,
     transport: custom(provider),
   });
 }
@@ -293,7 +294,7 @@ export function explain(error: unknown) {
   if (/TooLong/.test(text)) return "That text is over the on-chain limit.";
   if (/UnknownEmber/.test(text)) return "That signal is not in this kiln.";
   if (/TipFailed/.test(text)) return "The agent owner could not receive the tip.";
-  if (/insufficient funds/i.test(text)) return "Not enough testnet BOT for gas. Use the faucet.";
+  if (/insufficient funds/i.test(text)) return "Not enough BOT for gas. Mainnet BOT is required.";
   if (/not a Kiln/i.test(text)) return "That address is not a Kiln contract.";
   const line = text.replace(/^Error:\s*/, "").split("\n")[0];
   return line.length > 180 ? `${line.slice(0, 177)}…` : line || "That transaction failed.";

@@ -1,15 +1,17 @@
 # Kiln
 
-Forge one agent, fire a public signal, and stoke it with testnet BOT. Kiln is a small dApp for [BOT Chain](https://www.botchain.ai/en/) testnet. The pit on the right starts as a rehearsal on your device. Deploy writes a real `Kiln` contract from your wallet.
+Forge one agent, fire a public signal, and stoke it with BOT. Kiln is a small dApp for [BOT Chain](https://www.botchain.ai/en/) mainnet. The pit starts as a rehearsal on your device. Deploy writes a real `Kiln` contract from your wallet.
 
 ## Use it
 
-1. Open the app and connect MetaMask, Rabby, or another injected EVM wallet. Kiln adds **BOT Chain Testnet** if it is missing.
-2. Claim test BOT from the [faucet](https://faucet.botchain.ai/en/basic). Gas is paid in BOT.
-3. **Deploy Kiln to testnet.** That is one contract-creation transaction. Copy the address or open it on the [explorer](https://scan.bohr.life).
+1. Open the app and connect MetaMask, Rabby, or another injected EVM wallet. Kiln adds **BOT Chain** (chain 677) if it is missing.
+2. Gas is real BOT. Get it from [B DEX](https://dex.botchain.ai/). The testnet faucet will not pay mainnet gas.
+3. **Deploy Kiln to mainnet.** That is one contract-creation transaction. Copy the address or open it on the [explorer](https://scan.botchain.ai).
 4. Forge an agent (one per wallet), fire a signal, or stoke someone else's. Stoking a signal sends that BOT straight to the agent owner.
 
 Already deployed? Paste the contract address into **Open**. Hide it on this device any time. The chain copy stays where it is.
+
+The testnet kiln does not exist on mainnet. Deploy a new contract.
 
 Rehearsal does not spend BOT. Reset clears only the local pit.
 
@@ -17,15 +19,15 @@ Rehearsal does not spend BOT. Reset clears only the local pit.
 
 | | |
 |---|---|
-| Name | BOT Chain Testnet |
-| Chain ID | 968 (`0x3c8`) |
-| RPC | https://rpc.bohr.life |
-| Explorer | https://scan.bohr.life |
+| Name | BOT Chain |
+| Chain ID | 677 (`0x2a5`) |
+| RPC | https://rpc.botchain.ai |
+| Explorer | https://scan.botchain.ai |
 | Gas token | BOT |
-| Faucet | https://faucet.botchain.ai/en/basic |
+| BOT | https://dex.botchain.ai/ |
 | Docs | https://dev-docs.botchain.ai/docs/Developers/quick-guide/ |
 
-Mainnet is a different network (chain ID 677, `https://rpc.botchain.ai`). This app targets testnet only.
+Testnet is a different network (chain ID 968, `https://rpc.bohr.life`). This app targets mainnet.
 
 ## Contract
 
@@ -64,6 +66,8 @@ npm run build
 |---|---|
 | `contracts/Kiln.sol` | Contract source |
 | `src/lib/kiln/artifact.ts` | ABI and creation bytecode |
-| `src/lib/kiln/chain.ts` | Testnet client, deploy, and writes |
+| `src/lib/kiln/chain.ts` | Mainnet client, deploy, and writes |
 | `src/lib/kiln/model.ts` | Rehearsal pit |
-| `src/components/kiln/kiln-app.tsx` | UI |
+| `src/components/kiln/kiln-app.tsx` | Pit UI |
+| `src/components/site/site-page.tsx` | Landing page |
+| `src/routes/pit.tsx` | Pit route |

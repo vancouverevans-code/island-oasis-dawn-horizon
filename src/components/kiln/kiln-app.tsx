@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { formatGwei, parseEther, type Address } from "viem";
 import { Check, Copy, ExternalLink, Flame } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import kilnSource from "../../../contracts/Kiln.sol?raw";
 import {
-  BOT_TESTNET_HEX,
+  BOT_CHAIN_HEX,
+  BOT_CHAIN_ID,
   CREATION_BYTES,
+  DEX_URL,
   DOCS_URL,
   EXPLORER_URL,
-  FAUCET_URL,
   RPC_URL,
   deployKiln,
   ensureBotChain,
@@ -153,7 +155,9 @@ export function KilnApp() {
       setAccount(next ? (next as Address) : null);
     };
     const onChain = (chainId: unknown) => {
-      setChainOk(String(chainId).toLowerCase() === BOT_TESTNET_HEX);
+      const raw = String(chainId).toLowerCase();
+      const parsed = raw.startsWith("0x") ? Number.parseInt(raw, 16) : Number(raw);
+      setChainOk(raw === BOT_CHAIN_HEX || parsed === BOT_CHAIN_ID);
     };
     provider.on("accountsChanged", onAccounts);
     provider.on("chainChanged", onChain);
@@ -181,7 +185,7 @@ export function KilnApp() {
       setAccount(next);
       await ensureBotChain(provider);
       setChainOk(true);
-      toast.success("Wallet on BOT testnet");
+      toast.success("Wallet on BOT Chain");
     } catch (reason) {
       setError(explain(reason));
     }
@@ -224,7 +228,7 @@ export function KilnApp() {
       setMode("live");
       setLive({ agents: [], embers: [] });
       await refreshLive(result.address);
-      toast.success("Kiln is on BOT testnet");
+      toast.success("Kiln is on BOT Chain");
     } catch (reason) {
       setError(explain(reason));
     } finally {
@@ -301,7 +305,7 @@ export function KilnApp() {
       setHandle("");
       setOath("");
       await refreshLive();
-      toast.success("Agent forged on testnet");
+      toast.success("Agent forged on mainnet");
     } catch (reason) {
       setError(explain(reason));
     } finally {
@@ -359,7 +363,7 @@ export function KilnApp() {
       return;
     }
     if (!contract || !account) {
-      setError("Connect a funded testnet wallet to stoke with real BOT.");
+      setError("Connect a funded wallet to stoke with BOT.");
       return;
     }
     const provider = mustProvider();
@@ -401,15 +405,15 @@ export function KilnApp() {
       <Toaster theme="dark" position="top-center" />
       <header className="border-b border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber text-ink">
               <Flame className="h-5 w-5" aria-hidden />
             </span>
             <div>
               <p className="font-display text-3xl leading-none">Kiln</p>
-              <p className="mt-1 text-sm text-muted">Agents on BOT testnet</p>
+              <p className="mt-1 text-sm text-muted">Agents on BOT Chain</p>
             </div>
-          </div>
+          </Link>
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex h-11 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm">
               <span className="relative flex h-2 w-2">
@@ -453,9 +457,9 @@ export function KilnApp() {
               <p className="text-sm text-amber">Rehearsal</p>
               <h1 className="mt-2 font-display text-3xl leading-tight">Fire it here. Deploy it when it feels right.</h1>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                The pit on the right is on this device. The block counter is the real BOT testnet — chain 968,
-                about a block every second. Deploying writes one Kiln contract ({CREATION_BYTES.toLocaleString()}{" "}
-                bytes) from your wallet.
+                The pit on the right is on this device. The block counter is BOT Chain mainnet — chain 677.
+                Deploying writes one new Kiln contract ({CREATION_BYTES.toLocaleString()} bytes) from your wallet.
+                The testnet kiln does not exist on this chain.
               </p>
               <div className="mt-4 flex flex-col gap-2">
                 <button
@@ -464,7 +468,7 @@ export function KilnApp() {
                   onClick={() => void onDeploy()}
                   className="h-12 rounded-xl bg-amber px-4 font-medium text-ink disabled:opacity-50"
                 >
-                  {busy === "Deploying Kiln" ? "Deploying…" : account ? "Deploy Kiln to testnet" : "Connect to deploy"}
+                  {busy === "Deploying Kiln" ? "Deploying…" : account ? "Deploy Kiln to mainnet" : "Connect to deploy"}
                 </button>
                 {account && !chainOk ? (
                   <button
@@ -473,21 +477,21 @@ export function KilnApp() {
                     onClick={() => void switchChain()}
                     className="h-11 rounded-xl border border-line px-4 text-sm"
                   >
-                    Switch wallet to BOT testnet
+                    Switch wallet to BOT Chain
                   </button>
                 ) : null}
                 <a
-                  href={FAUCET_URL}
+                  href={DEX_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line px-4 text-sm"
                 >
-                  Get test BOT
+                  Get BOT
                   <ExternalLink className="h-4 w-4" aria-hidden />
                 </a>
               </div>
               {account && chainOk && balance === "0" ? (
-                <p className="mt-3 text-sm text-clay">This wallet has no testnet BOT yet. Claim from the faucet, then deploy.</p>
+                <p className="mt-3 text-sm text-clay">This wallet has no BOT yet. Gas on mainnet is real.</p>
               ) : null}
               <form
                 className="mt-4 flex gap-2"
@@ -513,7 +517,7 @@ export function KilnApp() {
             </section>
           ) : (
             <section className="rounded-2xl border border-amber bg-surface p-4">
-              <p className="text-sm text-amber">Live on BOT testnet</p>
+              <p className="text-sm text-amber">Live on BOT Chain</p>
               <h1 className="mt-2 font-display text-3xl leading-tight">This kiln is a real contract.</h1>
               {contract ? (
                 <div className="mt-3 flex items-center gap-2">
@@ -630,7 +634,7 @@ export function KilnApp() {
               {error}
             </p>
           ) : null}
-          {busy ? <p className="text-sm text-muted">{busy}… waiting for BOT testnet.</p> : null}
+          {busy ? <p className="text-sm text-muted">{busy}… waiting for BOT Chain.</p> : null}
           {lastTx ? (
             <a href={explorerTx(lastTx)} target="_blank" rel="noreferrer" className="text-sm text-amber underline decoration-line underline-offset-4">
               Last transaction on the explorer
@@ -640,14 +644,14 @@ export function KilnApp() {
           <details className="min-w-0 rounded-2xl border border-line bg-surface p-4">
             <summary className="cursor-pointer text-sm">Network, source, limits</summary>
             <dl className="mt-3 space-y-2 text-sm text-muted">
-              <Row k="Chain" v="BOT Chain Testnet · 968" />
+              <Row k="Chain" v="BOT Chain · 677" />
               <Row k="RPC" v={RPC_URL} />
               <Row k="Explorer" v={EXPLORER_URL} />
               <Row k="Gas token" v="BOT" />
             </dl>
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
-              <a className="underline decoration-line underline-offset-4" href={FAUCET_URL} target="_blank" rel="noreferrer">
-                Faucet
+              <a className="underline decoration-line underline-offset-4" href={DEX_URL} target="_blank" rel="noreferrer">
+                Get BOT
               </a>
               <a className="underline decoration-line underline-offset-4" href={EXPLORER_URL} target="_blank" rel="noreferrer">
                 Explorer
@@ -689,7 +693,7 @@ export function KilnApp() {
             <div className="rounded-2xl border border-dashed border-line bg-surface p-6">
               <p className="font-display text-3xl">The kiln is cold.</p>
               <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                Forge an agent, then fire the first signal. On testnet that pair of transactions is permanent.
+                Forge an agent, then fire the first signal. On mainnet that pair of transactions is permanent.
               </p>
             </div>
           ) : (
