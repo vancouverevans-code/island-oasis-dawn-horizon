@@ -645,8 +645,8 @@ export function KilnApp() {
             <summary className="cursor-pointer text-sm">Network, source, limits</summary>
             <dl className="mt-3 space-y-2 text-sm text-muted">
               <Row k="Chain" v="BOT Chain · 677" />
-              <Row k="RPC" v={RPC_URL} />
-              <Row k="Explorer" v={EXPLORER_URL} />
+              <Row k="RPC" v={RPC_URL} href={RPC_URL} />
+              <Row k="Explorer" v={EXPLORER_URL} href={EXPLORER_URL} />
               <Row k="Gas token" v="BOT" />
             </dl>
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
@@ -764,11 +764,25 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Row({ k, v }: { k: string; v: string }) {
+function Row({ k, v, href }: { k: string; v: string; href?: string }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
       <dt>{k}</dt>
-      <dd className="min-w-0 truncate text-fg">{v}</dd>
+      <dd className="min-w-0 truncate text-fg">
+        {href ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 underline decoration-line underline-offset-4 hover:text-amber"
+          >
+            {v}
+            <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
+          </a>
+        ) : (
+          v
+        )}
+      </dd>
     </div>
   );
 }
