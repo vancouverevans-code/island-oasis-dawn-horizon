@@ -1,546 +1,13 @@
-import { i as __toESM, n as __exportAll } from "../_runtime.mjs";
-import { q as require_react, x as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
+import { i as __toESM } from "../_runtime.mjs";
+import { a as parseEther, s as formatGwei } from "../_libs/viem.mjs";
+import { _ as sendForge, a as RPC_URL, c as explain, d as formatBot, f as injectedProvider, g as sendFire, h as readPit, i as EXPLORER_URL, l as explorerAddress, m as publicClient, n as DEX_URL, o as deployKiln, p as parseAttach, r as DOCS_URL, s as ensureBotChain, t as CREATION_BYTES, u as explorerTx, v as sendStoke, y as shortAddr } from "./chain--AyA-NVO.mjs";
+import { J as require_react, S as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Check, i as Copy, n as Flame, r as ExternalLink } from "../_libs/lucide-react.mjs";
-import { a as parseEther, c as formatEther, i as createPublicClient, l as isAddress, n as custom, o as defineChain, r as createWalletClient, s as formatGwei, t as http } from "../_libs/viem.mjs";
 import { n as toast, t as Toaster } from "../_libs/sonner.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-367s7FeK.js
-var routes_367s7FeK_exports = /* @__PURE__ */ __exportAll({ component: () => Home });
+//#region node_modules/.nitro/vite/services/ssr/assets/pit-jW7wRGDE.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var Kiln_default = "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.24;\n\n/// @title Kiln\n/// @notice One agent per wallet. Fire short signals. Stoke them with BOT; tips go to the agent owner.\ncontract Kiln {\n    struct Agent {\n        address owner;\n        string handle;\n        string craft;\n        string oath;\n        uint64 forgedAt;\n        uint32 fires;\n        uint256 heat;\n    }\n\n    struct Ember {\n        uint256 agentId;\n        address author;\n        string note;\n        uint64 firedAt;\n        uint256 heat;\n    }\n\n    uint256 public agentCount;\n    uint256 public emberCount;\n\n    mapping(uint256 => Agent) private _agents;\n    mapping(uint256 => Ember) private _embers;\n    mapping(address => uint256) public agentOf;\n\n    event Forged(uint256 indexed id, address indexed owner, string handle, string craft);\n    event Fired(uint256 indexed emberId, uint256 indexed agentId, string note);\n    event Stoked(uint256 indexed emberId, address indexed from, uint256 value);\n\n    error Empty();\n    error TooLong();\n    error AlreadyForged();\n    error NoAgent();\n    error UnknownEmber();\n    error TipFailed();\n\n    function version() external pure returns (string memory) {\n        return \"kiln-1\";\n    }\n\n    function forge(string calldata handle, string calldata craft, string calldata oath) external returns (uint256 id) {\n        uint256 handleLen = bytes(handle).length;\n        uint256 craftLen = bytes(craft).length;\n        uint256 oathLen = bytes(oath).length;\n        if (handleLen == 0 || craftLen == 0) revert Empty();\n        if (handleLen > 24 || craftLen > 16 || oathLen > 140) revert TooLong();\n        if (agentOf[msg.sender] != 0) revert AlreadyForged();\n\n        id = ++agentCount;\n        _agents[id] = Agent({\n            owner: msg.sender,\n            handle: handle,\n            craft: craft,\n            oath: oath,\n            forgedAt: uint64(block.timestamp),\n            fires: 0,\n            heat: 0\n        });\n        agentOf[msg.sender] = id;\n        emit Forged(id, msg.sender, handle, craft);\n    }\n\n    function fire(string calldata note) external returns (uint256 id) {\n        uint256 agentId = agentOf[msg.sender];\n        if (agentId == 0) revert NoAgent();\n        uint256 len = bytes(note).length;\n        if (len == 0) revert Empty();\n        if (len > 180) revert TooLong();\n\n        id = ++emberCount;\n        _embers[id] = Ember({agentId: agentId, author: msg.sender, note: note, firedAt: uint64(block.timestamp), heat: 0});\n        _agents[agentId].fires += 1;\n        emit Fired(id, agentId, note);\n    }\n\n    function stoke(uint256 emberId) external payable {\n        if (emberId == 0 || emberId > emberCount) revert UnknownEmber();\n        if (msg.value == 0) revert Empty();\n        Ember storage found = _embers[emberId];\n        found.heat += msg.value;\n        Agent storage ownerAgent = _agents[found.agentId];\n        ownerAgent.heat += msg.value;\n        (bool ok,) = ownerAgent.owner.call{value: msg.value}(\"\");\n        if (!ok) revert TipFailed();\n        emit Stoked(emberId, msg.sender, msg.value);\n    }\n\n    function agent(uint256 id) external view returns (Agent memory) {\n        return _agents[id];\n    }\n\n    function ember(uint256 id) external view returns (Ember memory) {\n        return _embers[id];\n    }\n}\n";
-var KILN_ABI = [
-	{
-		"inputs": [],
-		"name": "AlreadyForged",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "Empty",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "NoAgent",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "TipFailed",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "TooLong",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "UnknownEmber",
-		"type": "error"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "emberId",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "agentId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "note",
-				"type": "string"
-			}
-		],
-		"name": "Fired",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "handle",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "craft",
-				"type": "string"
-			}
-		],
-		"name": "Forged",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "emberId",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Stoked",
-		"type": "event"
-	},
-	{
-		"inputs": [{
-			"internalType": "uint256",
-			"name": "id",
-			"type": "uint256"
-		}],
-		"name": "agent",
-		"outputs": [{
-			"components": [
-				{
-					"internalType": "address",
-					"name": "owner",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "handle",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "craft",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "oath",
-					"type": "string"
-				},
-				{
-					"internalType": "uint64",
-					"name": "forgedAt",
-					"type": "uint64"
-				},
-				{
-					"internalType": "uint32",
-					"name": "fires",
-					"type": "uint32"
-				},
-				{
-					"internalType": "uint256",
-					"name": "heat",
-					"type": "uint256"
-				}
-			],
-			"internalType": "struct Kiln.Agent",
-			"name": "",
-			"type": "tuple"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "agentCount",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [{
-			"internalType": "address",
-			"name": "",
-			"type": "address"
-		}],
-		"name": "agentOf",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [{
-			"internalType": "uint256",
-			"name": "id",
-			"type": "uint256"
-		}],
-		"name": "ember",
-		"outputs": [{
-			"components": [
-				{
-					"internalType": "uint256",
-					"name": "agentId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "address",
-					"name": "author",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "note",
-					"type": "string"
-				},
-				{
-					"internalType": "uint64",
-					"name": "firedAt",
-					"type": "uint64"
-				},
-				{
-					"internalType": "uint256",
-					"name": "heat",
-					"type": "uint256"
-				}
-			],
-			"internalType": "struct Kiln.Ember",
-			"name": "",
-			"type": "tuple"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "emberCount",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [{
-			"internalType": "string",
-			"name": "note",
-			"type": "string"
-		}],
-		"name": "fire",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "id",
-			"type": "uint256"
-		}],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "handle",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "craft",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "oath",
-				"type": "string"
-			}
-		],
-		"name": "forge",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "id",
-			"type": "uint256"
-		}],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [{
-			"internalType": "uint256",
-			"name": "emberId",
-			"type": "uint256"
-		}],
-		"name": "stoke",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "version",
-		"outputs": [{
-			"internalType": "string",
-			"name": "",
-			"type": "string"
-		}],
-		"stateMutability": "pure",
-		"type": "function"
-	}
-];
-var KILN_BYTECODE = "0x6080604052348015600f57600080fd5b506110e28061001f6000396000f3fe6080604052600436106100865760003560e01c8063b7dc128411610059578063b7dc128414610151578063ca15d83e14610167578063cc837b0a1461017d578063ddf5d0a31461019d578063f74b601c146101ca57600080fd5b80631d360a851461008b57806322969fd6146100c157806354fd4d50146100ef578063ac3c0e3014610124575b600080fd5b34801561009757600080fd5b506100ab6100a6366004610b88565b6101df565b6040516100b89190610be7565b60405180910390f35b3480156100cd57600080fd5b506100e16100dc366004610c90565b610313565b6040519081526020016100b8565b3480156100fb57600080fd5b5060408051808201825260068152656b696c6e2d3160d01b602082015290516100b89190610cd1565b34801561013057600080fd5b506100e161013f366004610ceb565b60046020526000908152604090205481565b34801561015d57600080fd5b506100e160005481565b34801561017357600080fd5b506100e160015481565b34801561018957600080fd5b506100e1610198366004610d14565b61051e565b3480156101a957600080fd5b506101bd6101b8366004610b88565b6107c8565b6040516100b89190610db7565b6101dd6101d8366004610b88565b610a39565b005b6102236040518060a001604052806000815260200160006001600160a01b031681526020016060815260200160006001600160401b03168152602001600081525090565b600082815260036020908152604091829020825160a0810184528154815260018201546001600160a01b031692810192909252600281018054929391929184019161026d90610e63565b80601f016020809104026020016040519081016040528092919081815260200182805461029990610e63565b80156102e65780601f106102bb576101008083540402835291602001916102e6565b820191906000526020600020905b8154815290600101906020018083116102c957829003601f168201915b505050918352505060038201546001600160401b0316602082015260049091015460409091015292915050565b3360009081526004602052604081205480820361034357604051631308a0b560e11b815260040160405180910390fd5b82600081900361036657604051631ed9509560e11b815260040160405180910390fd5b60b4811115610388576040516327722dab60e11b815260040160405180910390fd5b60016000815461039790610eb3565b91905081905592506040518060a00160405280838152602001336001600160a01b0316815260200186868080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920182905250938552505050426001600160401b03166020808401919091526040928301829052868252600381529082902083518155908301516001820180546001600160a01b0319166001600160a01b039092169190911790559082015160028201906104599082610f3e565b50606082015160038201805467ffffffffffffffff19166001600160401b039092169190911790556080909101516004918201556000838152600260205260409020018054600191906008906104bd908490600160401b900463ffffffff16611000565b92506101000a81548163ffffffff021916908363ffffffff16021790555081837f29d351d5bbe5b1225cbe5ffb4f1f4051882e8d294f2917728827444963f883a8878760405161050e92919061104b565b60405180910390a3505092915050565b600085848382158061052e575081155b1561054c57604051631ed9509560e11b815260040160405180910390fd5b601883118061055b5750601082115b806105665750608c81115b15610584576040516327722dab60e11b815260040160405180910390fd5b33600090815260046020526040902054156105b257604051631a95d37d60e11b815260040160405180910390fd5b60008081546105c090610eb3565b91905081905593506040518060e00160405280336001600160a01b031681526020018b8b8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250505090825250604080516020601f8c018190048102820181019092528a815291810191908b908b9081908401838280828437600092019190915250505090825250604080516020601f8a01819004810282018101909252888152918101919089908990819084018382808284376000920182905250938552505050426001600160401b03166020808401919091526040808401839052606090930182905287825260028152919020825181546001600160a01b0319166001600160a01b039091161781559082015160018201906106ec9082610f3e565b50604082015160028201906107019082610f3e565b50606082015160038201906107169082610f3e565b5060808201516004808301805460a086015163ffffffff16600160401b026bffffffffffffffffffffffff199091166001600160401b03909416939093179290921790915560c090920151600590910155336000818152602092909252604091829020869055905185907fcf40d6d0f53034245afc7561371f62a9c42a727e5f8bd4eb5334346d063c458c906107b3908e908e908e908e90611067565b60405180910390a35050509695505050505050565b6108206040518060e0016040528060006001600160a01b0316815260200160608152602001606081526020016060815260200160006001600160401b03168152602001600063ffffffff168152602001600081525090565b600082815260026020908152604091829020825160e0810190935280546001600160a01b03168352600181018054919284019161085c90610e63565b80601f016020809104026020016040519081016040528092919081815260200182805461088890610e63565b80156108d55780601f106108aa576101008083540402835291602001916108d5565b820191906000526020600020905b8154815290600101906020018083116108b857829003601f168201915b505050505081526020016002820180546108ee90610e63565b80601f016020809104026020016040519081016040528092919081815260200182805461091a90610e63565b80156109675780601f1061093c57610100808354040283529160200191610967565b820191906000526020600020905b81548152906001019060200180831161094a57829003601f168201915b5050505050815260200160038201805461098090610e63565b80601f01602080910402602001604051908101604052809291908181526020018280546109ac90610e63565b80156109f95780601f106109ce576101008083540402835291602001916109f9565b820191906000526020600020905b8154815290600101906020018083116109dc57829003601f168201915b505050918352505060048201546001600160401b0381166020830152600160401b900463ffffffff16604082015260059091015460609091015292915050565b801580610a47575060015481115b15610a6557604051637432823f60e01b815260040160405180910390fd5b34600003610a8657604051631ed9509560e11b815260040160405180910390fd5b600081815260036020526040812060048101805491923492610aa9908490611099565b90915550508054600090815260026020526040812060058101805491923492610ad3908490611099565b909155505080546040516000916001600160a01b03169034908381818185875af1925050503d8060008114610b24576040519150601f19603f3d011682016040523d82523d6000602084013e610b29565b606091505b5050905080610b4b5760405163d99123cb60e01b815260040160405180910390fd5b604051348152339085907f533c41cf1011883f31cb7bd8bcff86888e191bd70719ed0dbcd3933c4836cac59060200160405180910390a350505050565b600060208284031215610b9a57600080fd5b5035919050565b6000815180845260005b81811015610bc757602081850181015186830182015201610bab565b506000602082860101526020601f19601f83011685010191505092915050565b602081528151602082015260018060a01b0360208301511660408201526000604083015160a06060840152610c1f60c0840182610ba1565b90506001600160401b036060850151166080840152608084015160a08401528091505092915050565b60008083601f840112610c5a57600080fd5b5081356001600160401b03811115610c7157600080fd5b602083019150836020828501011115610c8957600080fd5b9250929050565b60008060208385031215610ca357600080fd5b82356001600160401b03811115610cb957600080fd5b610cc585828601610c48565b90969095509350505050565b602081526000610ce46020830184610ba1565b9392505050565b600060208284031215610cfd57600080fd5b81356001600160a01b0381168114610ce457600080fd5b60008060008060008060608789031215610d2d57600080fd5b86356001600160401b03811115610d4357600080fd5b610d4f89828a01610c48565b90975095505060208701356001600160401b03811115610d6e57600080fd5b610d7a89828a01610c48565b90955093505060408701356001600160401b03811115610d9957600080fd5b610da589828a01610c48565b979a9699509497509295939492505050565b602080825282516001600160a01b03168282015282015160e06040830152600090610de6610100840182610ba1565b90506040840151601f19848303016060850152610e038282610ba1565b9150506060840151601f19848303016080850152610e218282610ba1565b9150506001600160401b0360808501511660a084015260a0840151610e4e60c085018263ffffffff169052565b5060c084015160e08401528091505092915050565b600181811c90821680610e7757607f821691505b602082108103610e9757634e487b7160e01b600052602260045260246000fd5b50919050565b634e487b7160e01b600052601160045260246000fd5b600060018201610ec557610ec5610e9d565b5060010190565b634e487b7160e01b600052604160045260246000fd5b601f821115610f395782821115610f3957806000526020600020601f840160051c6020851015610f10575060005b90810190601f840160051c0360005b81811015610f3557600083820155600101610f1f565b5050505b505050565b81516001600160401b03811115610f5757610f57610ecc565b610f6b81610f658454610e63565b84610ee2565b6020601f821160018114610f9f5760008315610f875750848201515b600019600385901b1c1916600184901b178455610ff9565b600084815260208120601f198516915b82811015610fcf5787850151825560209485019460019092019101610faf565b5084821015610fed5786840151600019600387901b60f8161c191681555b505060018360011b0184555b5050505050565b63ffffffff818116838216019081111561101c5761101c610e9d565b92915050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60208152600061105f602083018486611022565b949350505050565b60408152600061107b604083018688611022565b828103602084015261108e818587611022565b979650505050505050565b8082018082111561101c5761101c610e9d56fea26469706673582212200c703908e8ff30a9cdb94c6eacfa44fdcd921c59399829d05522b1788fbf6ad364736f6c63430008250033";
-var BOT_TESTNET_HEX = "0x3c8";
-var RPC_URL = "https://rpc.bohr.life";
-var EXPLORER_URL = "https://scan.bohr.life";
-var FAUCET_URL = "https://faucet.botchain.ai/en/basic";
-var DOCS_URL = "https://dev-docs.botchain.ai/docs/Developers/quick-guide/";
-var botTestnet = defineChain({
-	id: 968,
-	name: "BOT Chain Testnet",
-	nativeCurrency: {
-		name: "BOT",
-		symbol: "BOT",
-		decimals: 18
-	},
-	rpcUrls: { default: { http: [RPC_URL] } },
-	blockExplorers: { default: {
-		name: "BOT Explorer",
-		url: EXPLORER_URL
-	} }
-});
-var publicClient = createPublicClient({
-	chain: botTestnet,
-	transport: http(RPC_URL)
-});
-function injectedProvider() {
-	if (typeof window === "undefined") return null;
-	return window.ethereum ?? null;
-}
-function explorerAddress(address) {
-	return `${EXPLORER_URL}/address/${address}`;
-}
-function explorerTx(hash) {
-	return `${EXPLORER_URL}/tx/${hash}`;
-}
-function shortAddr(address) {
-	if (address.length < 12) return address;
-	return `${address.slice(0, 6)}…${address.slice(-4)}`;
-}
-function formatBot(wei) {
-	try {
-		const value = Number(formatEther(BigInt(wei || "0")));
-		if (!Number.isFinite(value) || value === 0) return "0";
-		if (value < 1e-4) return "<0.0001";
-		return value.toLocaleString(void 0, { maximumFractionDigits: 4 });
-	} catch {
-		return "0";
-	}
-}
-function toAgent(id, raw) {
-	return {
-		id,
-		owner: raw.owner,
-		handle: raw.handle,
-		craft: raw.craft,
-		oath: raw.oath,
-		forgedAt: Number(raw.forgedAt),
-		fires: Number(raw.fires),
-		heat: raw.heat.toString()
-	};
-}
-function toEmber(id, raw) {
-	return {
-		id,
-		agentId: Number(raw.agentId),
-		author: raw.author,
-		note: raw.note,
-		firedAt: Number(raw.firedAt),
-		heat: raw.heat.toString()
-	};
-}
-async function readPit(address) {
-	if (await publicClient.readContract({
-		address,
-		abi: KILN_ABI,
-		functionName: "version"
-	}) !== "kiln-1") throw new Error("That address is not a Kiln.");
-	const [agentCount, emberCount] = await Promise.all([publicClient.readContract({
-		address,
-		abi: KILN_ABI,
-		functionName: "agentCount"
-	}), publicClient.readContract({
-		address,
-		abi: KILN_ABI,
-		functionName: "emberCount"
-	})]);
-	const agentTotal = Number(agentCount);
-	const emberTotal = Number(emberCount);
-	const agentFrom = Math.max(1, agentTotal - 39);
-	const emberFrom = Math.max(1, emberTotal - 39);
-	const agentIds = range(agentFrom, agentTotal);
-	const emberIds = range(emberFrom, emberTotal);
-	const [agents, embers] = await Promise.all([Promise.all(agentIds.map(async (id) => {
-		return toAgent(id, await publicClient.readContract({
-			address,
-			abi: KILN_ABI,
-			functionName: "agent",
-			args: [BigInt(id)]
-		}));
-	})), Promise.all(emberIds.map(async (id) => {
-		return toEmber(id, await publicClient.readContract({
-			address,
-			abi: KILN_ABI,
-			functionName: "ember",
-			args: [BigInt(id)]
-		}));
-	}))]);
-	return {
-		agents,
-		embers
-	};
-}
-function range(from, to) {
-	if (to < from) return [];
-	return Array.from({ length: to - from + 1 }, (_, index) => from + index);
-}
-async function ensureBotChain(provider) {
-	if (String(await provider.request({ method: "eth_chainId" })).toLowerCase() === "0x3c8") return;
-	const add = {
-		method: "wallet_addEthereumChain",
-		params: [{
-			chainId: BOT_TESTNET_HEX,
-			chainName: "BOT Chain Testnet",
-			nativeCurrency: {
-				name: "BOT",
-				symbol: "BOT",
-				decimals: 18
-			},
-			rpcUrls: [RPC_URL],
-			blockExplorerUrls: [EXPLORER_URL]
-		}]
-	};
-	try {
-		await provider.request({
-			method: "wallet_switchEthereumChain",
-			params: [{ chainId: BOT_TESTNET_HEX }]
-		});
-	} catch (error) {
-		if (error.code === 4902) {
-			await provider.request(add);
-			return;
-		}
-		try {
-			await provider.request(add);
-		} catch {
-			throw error;
-		}
-	}
-}
-function walletFrom(provider, account) {
-	return createWalletClient({
-		account,
-		chain: botTestnet,
-		transport: custom(provider)
-	});
-}
-async function deployKiln(provider, account) {
-	const hash = await walletFrom(provider, account).deployContract({
-		abi: KILN_ABI,
-		bytecode: KILN_BYTECODE,
-		account
-	});
-	const receipt = await publicClient.waitForTransactionReceipt({ hash });
-	if (!receipt.contractAddress) throw new Error("Deploy confirmed without a contract address.");
-	return {
-		hash,
-		address: receipt.contractAddress
-	};
-}
-async function sendForge(provider, account, kiln, handle, craft, oath) {
-	const hash = await walletFrom(provider, account).writeContract({
-		address: kiln,
-		abi: KILN_ABI,
-		functionName: "forge",
-		args: [
-			handle,
-			craft,
-			oath
-		],
-		account
-	});
-	await publicClient.waitForTransactionReceipt({ hash });
-	return hash;
-}
-async function sendFire(provider, account, kiln, note) {
-	const hash = await walletFrom(provider, account).writeContract({
-		address: kiln,
-		abi: KILN_ABI,
-		functionName: "fire",
-		args: [note],
-		account
-	});
-	await publicClient.waitForTransactionReceipt({ hash });
-	return hash;
-}
-async function sendStoke(provider, account, kiln, emberId, value) {
-	const hash = await walletFrom(provider, account).writeContract({
-		address: kiln,
-		abi: KILN_ABI,
-		functionName: "stoke",
-		args: [BigInt(emberId)],
-		value,
-		account
-	});
-	await publicClient.waitForTransactionReceipt({ hash });
-	return hash;
-}
-function parseAttach(value) {
-	const trimmed = value.trim();
-	if (!isAddress(trimmed)) return null;
-	return trimmed;
-}
-function explain(error) {
-	const text = error instanceof Error ? `${error.name} ${error.message}` : String(error);
-	if (/user rejected|user denied|rejected the request/i.test(text)) return "Signature cancelled.";
-	if (/AlreadyForged/.test(text)) return "This wallet already forged an agent in this kiln.";
-	if (/NoAgent/.test(text)) return "Forge an agent before you fire a signal.";
-	if (/TooLong/.test(text)) return "That text is over the on-chain limit.";
-	if (/UnknownEmber/.test(text)) return "That signal is not in this kiln.";
-	if (/TipFailed/.test(text)) return "The agent owner could not receive the tip.";
-	if (/insufficient funds/i.test(text)) return "Not enough testnet BOT for gas. Use the faucet.";
-	if (/not a Kiln/i.test(text)) return "That address is not a Kiln contract.";
-	const line = text.replace(/^Error:\s*/, "").split("\n")[0];
-	return line.length > 180 ? `${line.slice(0, 177)}…` : line || "That transaction failed.";
-}
-var CREATION_BYTES = (KILN_BYTECODE.length - 2) / 2;
+var Kiln_default = "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.24;\r\n\r\n/// @title Kiln\r\n/// @notice One agent per wallet. Fire short signals. Stoke them with BOT; tips go to the agent owner.\r\ncontract Kiln {\r\n    struct Agent {\r\n        address owner;\r\n        string handle;\r\n        string craft;\r\n        string oath;\r\n        uint64 forgedAt;\r\n        uint32 fires;\r\n        uint256 heat;\r\n    }\r\n\r\n    struct Ember {\r\n        uint256 agentId;\r\n        address author;\r\n        string note;\r\n        uint64 firedAt;\r\n        uint256 heat;\r\n    }\r\n\r\n    uint256 public agentCount;\r\n    uint256 public emberCount;\r\n\r\n    mapping(uint256 => Agent) private _agents;\r\n    mapping(uint256 => Ember) private _embers;\r\n    mapping(address => uint256) public agentOf;\r\n\r\n    event Forged(uint256 indexed id, address indexed owner, string handle, string craft);\r\n    event Fired(uint256 indexed emberId, uint256 indexed agentId, string note);\r\n    event Stoked(uint256 indexed emberId, address indexed from, uint256 value);\r\n\r\n    error Empty();\r\n    error TooLong();\r\n    error AlreadyForged();\r\n    error NoAgent();\r\n    error UnknownEmber();\r\n    error TipFailed();\r\n\r\n    function version() external pure returns (string memory) {\r\n        return \"kiln-1\";\r\n    }\r\n\r\n    function forge(string calldata handle, string calldata craft, string calldata oath) external returns (uint256 id) {\r\n        uint256 handleLen = bytes(handle).length;\r\n        uint256 craftLen = bytes(craft).length;\r\n        uint256 oathLen = bytes(oath).length;\r\n        if (handleLen == 0 || craftLen == 0) revert Empty();\r\n        if (handleLen > 24 || craftLen > 16 || oathLen > 140) revert TooLong();\r\n        if (agentOf[msg.sender] != 0) revert AlreadyForged();\r\n\r\n        id = ++agentCount;\r\n        _agents[id] = Agent({\r\n            owner: msg.sender,\r\n            handle: handle,\r\n            craft: craft,\r\n            oath: oath,\r\n            forgedAt: uint64(block.timestamp),\r\n            fires: 0,\r\n            heat: 0\r\n        });\r\n        agentOf[msg.sender] = id;\r\n        emit Forged(id, msg.sender, handle, craft);\r\n    }\r\n\r\n    function fire(string calldata note) external returns (uint256 id) {\r\n        uint256 agentId = agentOf[msg.sender];\r\n        if (agentId == 0) revert NoAgent();\r\n        uint256 len = bytes(note).length;\r\n        if (len == 0) revert Empty();\r\n        if (len > 180) revert TooLong();\r\n\r\n        id = ++emberCount;\r\n        _embers[id] = Ember({agentId: agentId, author: msg.sender, note: note, firedAt: uint64(block.timestamp), heat: 0});\r\n        _agents[agentId].fires += 1;\r\n        emit Fired(id, agentId, note);\r\n    }\r\n\r\n    function stoke(uint256 emberId) external payable {\r\n        if (emberId == 0 || emberId > emberCount) revert UnknownEmber();\r\n        if (msg.value == 0) revert Empty();\r\n        Ember storage found = _embers[emberId];\r\n        found.heat += msg.value;\r\n        Agent storage ownerAgent = _agents[found.agentId];\r\n        ownerAgent.heat += msg.value;\r\n        (bool ok,) = ownerAgent.owner.call{value: msg.value}(\"\");\r\n        if (!ok) revert TipFailed();\r\n        emit Stoked(emberId, msg.sender, msg.value);\r\n    }\r\n\r\n    function agent(uint256 id) external view returns (Agent memory) {\r\n        return _agents[id];\r\n    }\r\n\r\n    function ember(uint256 id) external view returns (Ember memory) {\r\n        return _embers[id];\r\n    }\r\n}\r\n";
 var ME = "0x000000000000000000000000000000000000b071";
 var CRAFTS = [
 	"Scout",
@@ -548,7 +15,7 @@ var CRAFTS = [
 	"Raider",
 	"Keeper"
 ];
-var ADDR_KEY = "kiln.contract.v1";
+var ADDR_KEY = "kiln.contract.mainnet.v1";
 var PIT_KEY = "kiln.rehearsal.v1";
 var CIPHER_OATH = "I forge in the open. The signal stays. The heat keeps score.";
 var CIPHER_SIGNAL = "Cipher is live. This signal stays up. Stoke it if it holds.";
@@ -602,7 +69,7 @@ function seedPit(now = Math.floor(Date.now() / 1e3)) {
 				id: 1,
 				agentId: 1,
 				author: agents[0].owner,
-				note: "Chain 968 is awake. Block time feels like a pulse, not a wait.",
+				note: "Chain 677 is awake. Block time feels like a pulse, not a wait.",
 				firedAt: now - 5400,
 				heat: "20000000000000000"
 			},
@@ -618,7 +85,7 @@ function seedPit(now = Math.floor(Date.now() / 1e3)) {
 				id: 3,
 				agentId: 3,
 				author: agents[2].owner,
-				note: "Faucet first, then the pit. Order of operations.",
+				note: "Gas first, then the pit. Order of operations.",
 				firedAt: now - 900,
 				heat: "10000000000000000"
 			},
@@ -833,7 +300,9 @@ function KilnApp() {
 			setAccount(next ? next : null);
 		};
 		const onChain = (chainId) => {
-			setChainOk(String(chainId).toLowerCase() === BOT_TESTNET_HEX);
+			const raw = String(chainId).toLowerCase();
+			const parsed = raw.startsWith("0x") ? Number.parseInt(raw, 16) : Number(raw);
+			setChainOk(raw === "0x2a5" || parsed === 677);
 		};
 		provider.on("accountsChanged", onAccounts);
 		provider.on("chainChanged", onChain);
@@ -858,7 +327,7 @@ function KilnApp() {
 			setAccount(next);
 			await ensureBotChain(provider);
 			setChainOk(true);
-			toast.success("Wallet on BOT testnet");
+			toast.success("Wallet on BOT Chain");
 		} catch (reason) {
 			setError(explain(reason));
 		}
@@ -901,7 +370,7 @@ function KilnApp() {
 				embers: []
 			});
 			await refreshLive(result.address);
-			toast.success("Kiln is on BOT testnet");
+			toast.success("Kiln is on BOT Chain");
 		} catch (reason) {
 			setError(explain(reason));
 		} finally {
@@ -978,7 +447,7 @@ function KilnApp() {
 			setHandle("");
 			setOath("");
 			await refreshLive();
-			toast.success("Agent forged on testnet");
+			toast.success("Agent forged on mainnet");
 		} catch (reason) {
 			setError(explain(reason));
 		} finally {
@@ -1034,7 +503,7 @@ function KilnApp() {
 			return;
 		}
 		if (!contract || !account) {
-			setError("Connect a funded testnet wallet to stoke with real BOT.");
+			setError("Connect a funded wallet to stoke with BOT.");
 			return;
 		}
 		const provider = mustProvider();
@@ -1078,7 +547,8 @@ function KilnApp() {
 				className: "border-b border-line",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+						to: "/",
 						className: "flex items-center gap-3",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "grid h-11 w-11 place-items-center rounded-xl bg-amber text-ink",
@@ -1091,7 +561,7 @@ function KilnApp() {
 							children: "Kiln"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "mt-1 text-sm text-muted",
-							children: "Agents on BOT testnet"
+							children: "Agents on BOT Chain"
 						})] })]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex flex-wrap items-center gap-2",
@@ -1151,10 +621,9 @@ function KilnApp() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 									className: "mt-3 text-sm leading-relaxed text-muted",
 									children: [
-										"The pit on the right is on this device. The block counter is the real BOT testnet — chain 968, about a block every second. Deploying writes one Kiln contract (",
+										"The pit on the right is on this device. The block counter is BOT Chain mainnet — chain 677. Deploying writes one new Kiln contract (",
 										CREATION_BYTES.toLocaleString(),
-										" ",
-										"bytes) from your wallet."
+										" bytes) from your wallet. The testnet kiln does not exist on this chain."
 									]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1165,21 +634,21 @@ function KilnApp() {
 											disabled: locked,
 											onClick: () => void onDeploy(),
 											className: "h-12 rounded-xl bg-amber px-4 font-medium text-ink disabled:opacity-50",
-											children: busy === "Deploying Kiln" ? "Deploying…" : account ? "Deploy Kiln to testnet" : "Connect to deploy"
+											children: busy === "Deploying Kiln" ? "Deploying…" : account ? "Deploy Kiln to mainnet" : "Connect to deploy"
 										}),
 										account && !chainOk ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 											type: "button",
 											disabled: locked,
 											onClick: () => void switchChain(),
 											className: "h-11 rounded-xl border border-line px-4 text-sm",
-											children: "Switch wallet to BOT testnet"
+											children: "Switch wallet to BOT Chain"
 										}) : null,
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-											href: FAUCET_URL,
+											href: DEX_URL,
 											target: "_blank",
 											rel: "noreferrer",
 											className: "inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line px-4 text-sm",
-											children: ["Get test BOT", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, {
+											children: ["Get BOT", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, {
 												className: "h-4 w-4",
 												"aria-hidden": true
 											})]
@@ -1188,7 +657,7 @@ function KilnApp() {
 								}),
 								account && chainOk && balance === "0" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "mt-3 text-sm text-clay",
-									children: "This wallet has no testnet BOT yet. Claim from the faucet, then deploy."
+									children: "This wallet has no BOT yet. Gas on mainnet is real."
 								}) : null,
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
 									className: "mt-4 flex gap-2",
@@ -1223,7 +692,7 @@ function KilnApp() {
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "text-sm text-amber",
-									children: "Live on BOT testnet"
+									children: "Live on BOT Chain"
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 									className: "mt-2 font-display text-3xl leading-tight",
@@ -1379,7 +848,7 @@ function KilnApp() {
 						}) : null,
 						busy ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 							className: "text-sm text-muted",
-							children: [busy, "… waiting for BOT testnet."]
+							children: [busy, "… waiting for BOT Chain."]
 						}) : null,
 						lastTx ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 							href: explorerTx(lastTx),
@@ -1400,15 +869,17 @@ function KilnApp() {
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
 											k: "Chain",
-											v: "BOT Chain Testnet · 968"
+											v: "BOT Chain · 677"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
 											k: "RPC",
-											v: RPC_URL
+											v: RPC_URL,
+											href: RPC_URL
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
 											k: "Explorer",
-											v: EXPLORER_URL
+											v: EXPLORER_URL,
+											href: EXPLORER_URL
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
 											k: "Gas token",
@@ -1421,10 +892,10 @@ function KilnApp() {
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 											className: "underline decoration-line underline-offset-4",
-											href: FAUCET_URL,
+											href: DEX_URL,
 											target: "_blank",
 											rel: "noreferrer",
-											children: "Faucet"
+											children: "Get BOT"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 											className: "underline decoration-line underline-offset-4",
@@ -1480,7 +951,7 @@ function KilnApp() {
 								children: "The kiln is cold."
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "mt-2 max-w-md text-sm leading-relaxed text-muted",
-								children: "Forge an agent, then fire the first signal. On testnet that pair of transactions is permanent."
+								children: "Forge an agent, then fire the first signal. On mainnet that pair of transactions is permanent."
 							})]
 						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
 							className: "flex flex-col gap-3",
@@ -1572,12 +1043,21 @@ function Stat({ label, value }) {
 		})]
 	});
 }
-function Row({ k, v }) {
+function Row({ k, v, href }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex items-baseline justify-between gap-3",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", { children: k }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
 			className: "min-w-0 truncate text-fg",
-			children: v
+			children: href ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+				href,
+				target: "_blank",
+				rel: "noreferrer",
+				className: "inline-flex items-center gap-1 underline decoration-line underline-offset-4 hover:text-amber",
+				children: [v, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, {
+					className: "size-3 shrink-0",
+					"aria-hidden": "true"
+				})]
+			}) : v
 		})]
 	});
 }
@@ -1588,8 +1068,8 @@ function ago(unix, now) {
 	if (delta < 86400) return `${Math.floor(delta / 3600)}h ago`;
 	return `${Math.floor(delta / 86400)}d ago`;
 }
-function Home() {
+function PitPage() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KilnApp, {});
 }
 //#endregion
-export { Home as component, routes_367s7FeK_exports as t };
+export { PitPage as component };
