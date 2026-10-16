@@ -20,9 +20,9 @@
  * `process.env`, which is why the merge has to happen before Vite starts.
  */
 import { spawn } from "node:child_process";
-import { readFileSync, realpathSync } from "node:fs";
+import { accessSync, constants, readFileSync, realpathSync } from "node:fs";
 import { constants as osConstants } from "node:os";
-import { dirname, join } from "node:path";
+import { delimiter, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const APP_ENV_REL_PATH = ".grok/app-env.json";
@@ -104,6 +104,55 @@ export function isMainModule(moduleUrl) {
   }
 }
 
+/**
+ * Resolve `command` the way a shell would on Windows.
+ *
+ * npm installs CLIs as `.cmd` shims, and a shell-less `spawn("vite", …)` finds
+ * no such file — Node's spawn neither consults PATHEXT nor runs a shell, so the
+ * build dies with `spawn vite ENOENT`. Look the shim up on PATH instead of
+ * routing argv through `cmd.exe`, which would re-quote the wrapper's `-e`
+ * script arguments and break callers that pass them. Everywhere else, and for
+ * anything already path-like, the command is returned untouched.
+ */
+export function resolveExecutable(command, env = process.env) {
+  if (process.platform !== "win32") return command;
+  if (/[\\/]/.test(command)) return command;
+  const exts = /\.[a-z0-9]+$/i.test(command) ? [""] : [".cmd", ".exe", ".bat", ".com"];
+  const pathValue = env.PATH ?? env.Path ?? "";
+  for (const dir of pathValue.split(delimiter)) {
+    if (!dir) continue;
+    for (const ext of exts) {
+      const candidate = join(dir, command + ext);
+      try {
+        accessSync(candidate, constants.F_OK);
+        return candidate;
+      } catch {
+        // Not in this directory — keep looking.
+      }
+    }
+  }
+  return command;
+}
+
+/**
+ * Plan a `spawn` for `command`.
+ *
+ * On Windows, npm installs CLIs as `.cmd` shims and a `.cmd`/`.bat` file cannot
+ * be launched directly — libuv spawns no `cmd.exe` for it, so a shell-less
+ * `spawn("vite", …)` dies with `spawn vite ENOENT` and pointing at the resolved
+ * `vite.cmd` dies with `EINVAL`. Route *only* those shims through the shell, and
+ * as one command line: an args array next to `shell: true` is re-quoted by
+ * `cmd.exe` and trips Node's DEP0190 warning. Real executables (a full path to
+ * `node.exe`, and everything off Windows) keep the args array untouched.
+ */
+export function spawnPlan(command, args, env = process.env) {
+  if (process.platform !== "win32") return { file: command, args, shell: false };
+  const file = resolveExecutable(command, env);
+  if (!/\.(cmd|bat)$/i.test(file)) return { file, args, shell: false };
+  const quote = (value) => (/[ \t"]/.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value);
+  return { file: [file, ...args].map(quote).join(" "), args: [], shell: true };
+}
+
 function main(argv) {
   const [command, ...args] = argv;
   if (!command) {
@@ -111,14 +160,8 @@ function main(argv) {
     process.exit(2);
   }
   const env = mergeAppEnv(readAppEnv(projectRoot()), process.env);
-  // On Windows the npm-installed CLI is `vite.cmd`, and a shell-less `spawn`
-  // resolves no such executable (`ENOENT`). Go through the shell there so
-  // `npm run dev` / `npm run build` work off Linux too.
-  const child = spawn(command, args, {
-    stdio: "inherit",
-    env,
-    shell: process.platform === "win32",
-  });
+  const { file, args: spawnArgs, shell } = spawnPlan(command, args, env);
+  const child = spawn(file, spawnArgs, { stdio: "inherit", env, shell });
   // The dev server is long-running and is stopped by signalling this wrapper.
   for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
     process.on(signal, () => child.kill(signal));

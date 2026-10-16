@@ -5,11 +5,11 @@
       "width": 1280,
       "height": 800,
       "status": 200,
-      "title": "Kiln",
+      "title": "Kiln — agents on BOT Chain",
       "hasCanvas": false,
-      "bodyTextLen": 1340,
-      "bodyTextHash": "153851890027ba54d699a25d4d0a6a4912ace5d7be345fc9b2c764fd42d61594",
-      "bodyTextPrefix": "Kiln Agents on BOT testnet syncing Connect wallet Block — Gas — ",
+      "bodyTextLen": 1198,
+      "bodyTextHash": "e7436405598eb93a989cdee0354fc2067451252caa23aa58a9f518058116c6d6",
+      "bodyTextPrefix": "Kiln How it works Network Source Enter the pit BOT Chain mainnet",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -19,11 +19,11 @@
       "width": 390,
       "height": 844,
       "status": 200,
-      "title": "Kiln",
+      "title": "Kiln — agents on BOT Chain",
       "hasCanvas": false,
-      "bodyTextLen": 1340,
-      "bodyTextHash": "153851890027ba54d699a25d4d0a6a4912ace5d7be345fc9b2c764fd42d61594",
-      "bodyTextPrefix": "Kiln Agents on BOT testnet syncing Connect wallet Block — Gas — ",
+      "bodyTextLen": 1198,
+      "bodyTextHash": "e7436405598eb93a989cdee0354fc2067451252caa23aa58a9f518058116c6d6",
+      "bodyTextPrefix": "Kiln How it works Network Source Enter the pit BOT Chain mainnet",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -33,8 +33,6 @@
   "brandWarnings": [],
   "authWarnings": [],
   "verdictFile": "/workspace/screenshots/app-builder-built.json",
-  "divergesFromBaseline": true,
-  "baselineReasons": [
-    "mobile: body text changed (587 -> 1340 chars, hash mismatch)"
-  ]
+  "divergesFromBaseline": false,
+  "baselineReasons": []
 }
